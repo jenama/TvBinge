@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 
 class Users extends Component {
     constructor(props) {
+        
         super(props)
+        console.log('users!!!', this.props.users )
         this.state = {
             users: this.props.users,
             loggedUser: this.props.loginUser

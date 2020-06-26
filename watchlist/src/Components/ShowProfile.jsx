@@ -8,9 +8,8 @@ class ShowProfile extends Component {
             showProfile: {},
             comments: [],
            comment_body: '',
-           user_id: 1,
-        //    show_id: 0,
-           username: ''
+           username: '', 
+        //    user_id: 0
         }
     }
 
@@ -42,13 +41,14 @@ class ShowProfile extends Component {
         } catch (error) {
            console.log('error', error) 
         }
-        // this.handleSubmit(params)
+    
     }
 
     handleInput = (e) => {
         console.log(e.target.value)
          this.setState({
-             username:e.target.value
+            username:e.target.value,
+           
          })
     }
 
@@ -61,31 +61,33 @@ class ShowProfile extends Component {
     }
 
     handleSubmit = async(e) => {
+        console.log('show id', this.props.match.params.id)
+        console.log('some props', this.props)
         e.preventDefault()
-        // const showId
+        
         try {
-            const { comment_body, user_id, show_id} = this.state
+            // const showId = this.props.match.params.id
+            const { comment_body, user_id, username} = this.state
          
             const url = `http://localhost:4100/comments`;
             const data= {
                 comment_body: comment_body,
-                user_id: user_id,
-                // show_id: show_id
+                user_id: 1,
+                show_id: this.props.match.params.id
             }
+            console.log('user_id', user_id)
             await axios.post(url, data);
             console.log('new comment', data)
             this.setState({
                 comment_body: comment_body,
-                user_id: e.target.value,
-                // show_id: show_id
+                user_id: user_id ,
+                show_id: this.props.match.params.id
             });
         } catch (error) {
             console.log('ERROR', error)
         }
     }
 
-  
-    
     render() {
         const { showProfile, comment_body, comments, username } = this.state
         return(
@@ -101,6 +103,8 @@ class ShowProfile extends Component {
                         <br></br>
                         <input type='submit' value='Add'/>
                     </form>
+                    <h3>{username}</h3>
+                    <div>{comment_body}</div>
                     <div>
                         {comments.map((comment, i)=> {
                             return(

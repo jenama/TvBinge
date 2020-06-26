@@ -12,11 +12,11 @@ class UserProfile extends Component {
     }
 
     async componentDidMount() {
-        const params = this.props.match.params.id;
+        const userId = this.props.match.params.id;
           
-       console.log('props', params)
+       console.log('user ID', userId)
         try {
-            const url = `http://localhost:4100/users/${params}`
+            const url = `http://localhost:4100/users/${userId}`
             const { data } = await axios.get(url);
             console.log(' profile', data)
             this.setState({
@@ -25,7 +25,7 @@ class UserProfile extends Component {
         } catch (error) {
             console.log('error', error)
         }
-        this.getUserShows(params)
+        this.getUserShows(userId)
     }
 
     getUserShows = async(params) => {

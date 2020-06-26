@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 class AddShow extends Component {
     constructor(props) {
         super(props)
         console.log('props////', this.props)
-        let int;
+        
         this.state = {
             shows: [],
             choice: '',
             title: '',
             img_url: '',
             genre_name: '',
-            genre_id: 1,
+            // genre_id: 1,
             genres: []
 
         }
@@ -63,9 +64,9 @@ class AddShow extends Component {
         })
         console.log('input', value)
     }
-    // handleForm = async(e) => {
-    //      e.preventDefault()
-    // }
+    handleForm = async(e) => {
+         e.preventDefault()
+    }
 
     handleForm2 = async(e) => {
          e.preventDefault()
@@ -95,7 +96,7 @@ class AddShow extends Component {
     }
 
     render() {
-        // const { shows} = this.props
+        // const showId = this.props.match.params.id
         const { genres, shows } = this.state
         console.log('add show', genres)
         return(
@@ -106,12 +107,17 @@ class AddShow extends Component {
                     <select onChange={this.handleSelect} value={this.state.choice}>
                         {shows.map((show, i) =>{
                             return (
-                                <option key={i}>{show.title}</option>
+                                <>
+                                  <option key={i}>{show.title}</option>
+                                  <Link to={`/shows/${show.id}`}></Link>   
+                                </>
+                               
                             )
                         })}
                     </select>
                     <br></br> 
                     <input type='submit' value='start watching'/>
+                    {/* <Link to={`/shows/${show.id}`}></Link> */}
                 </form>
                 <form onSubmit={this.handleForm2} >
                     <h2>Or Add A New Show</h2>
