@@ -9,7 +9,7 @@ class Users extends Component {
         console.log('users!!!', this.props.users )
         this.state = {
             users: this.props.users,
-            loggedUser: this.props.loginUser
+            loggedUser: this.props.loggedUser
         };
     }
 
@@ -20,6 +20,7 @@ class Users extends Component {
            console.log('users', data.payload)
             this.setState({
                 users: data.payload,
+                loggedUser:data.payload[0].username
             })
         } catch (error) {
             console.log('error', error)
@@ -27,11 +28,12 @@ class Users extends Component {
     }
 
     render() {
-        const { users } = this.state
+        const { users, loggedUser } = this.state
         return(
             <div className='users'>
                 <h1>All TV-Watchlist Users</h1>
                 <div>
+                    <p>Logged In:{loggedUser}</p>
                     {users.map((user, i) => {
                         return (
                             <div className='user' key={i}>

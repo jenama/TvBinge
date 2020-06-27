@@ -91,24 +91,27 @@ class ShowProfile extends Component {
     render() {
         const { showProfile, comment_body, comments, username } = this.state
         return(
-            <div>
+            <div className='show-profile'>
                 <h2>Welcome to {showProfile.title}'s Page </h2>
                 <img src={showProfile.img_url} alt='' width='300px' height='300px'/>
                 <div> Genre: {showProfile.genre_name} </div>
-                <div>
+                <div className='comments-container'>
                     <form onSubmit={this.handleSubmit}>
                         <input type='text' onChange={this.handleInput} value={username} />
                         <br></br>
-                        <textarea onChange={this.handleText} value={comment_body}/>
+                        <textarea 
+                            onChange={this.handleText} 
+                            value={comment_body}
+                            placeHolder='comment...'
+                        />
                         <br></br>
                         <input type='submit' value='Add'/>
                     </form>
-                    <h3>{username}</h3>
-                    <div>{comment_body}</div>
-                    <div>
+                    <div className='comments'>
+                        <div>
                         {comments.map((comment, i)=> {
                             return(
-                                <div>
+                                <div className='comment-body'>
                                     <ol>
                                         <h3>{comment.username}</h3>
                                         <li>{comment.comment_body}</li>    
@@ -117,6 +120,12 @@ class ShowProfile extends Component {
                                 </div>
                             )
                         })}
+
+                        <h3>{username}</h3>
+                        <div>{comment_body}</div>
+                    </div>
+                    
+                    
                     </div>
                 </div>
             </div>

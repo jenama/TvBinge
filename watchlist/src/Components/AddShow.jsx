@@ -12,7 +12,7 @@ class AddShow extends Component {
             title: '',
             img_url: '',
             genre_name: '',
-            // genre_id: 1,
+            genre_id: 1,
             genres: []
 
         }
@@ -53,7 +53,14 @@ class AddShow extends Component {
         console.log('select', e.target.value)
         this.setState({
             choice: e.target.value,
-            genre_name: e.target.value
+           
+        })
+    }
+
+    handleChange = (e) => {
+         console.log('select', e.target.value)
+        this.setState({
+             genre_name: e.target.value
         })
     }
 
@@ -74,6 +81,7 @@ class AddShow extends Component {
 
     try {
       const url = `http://localhost:4100/shows`;
+      
       
       const data = {
         title: title,
@@ -105,6 +113,7 @@ class AddShow extends Component {
                 <form onSubmit={this.handleForm}>
                     <h2>Start Watching Show</h2>
                     <select onChange={this.handleSelect} value={this.state.choice}>
+                        <option>---ALL Shows---</option>
                         {shows.map((show, i) =>{
                             return (
                                 <>
@@ -122,26 +131,31 @@ class AddShow extends Component {
                 <form onSubmit={this.handleForm2} >
                     <h2>Or Add A New Show</h2>
                     <label>
+                        Title
                         <input 
                             type="text"
                             name="title"
                             value={this.state.title}
                             onChange={this.handleInput}
+                            placeHolder='Title...'
                         />
                     </label>
                     <br></br>
                     <label>
+                        Img URL
                         <input
                             type="text"
                             name="img_url"
                             value={this.state.img_url}
-                            onChange={this.handleInput} 
+                            onChange={this.handleInput}
+                            placeHolder='url...' 
                         />
                     </label>
                     <br></br>
                     <label>
-                        <select onChange= {this.handleSelect} value={this.state.genre_name} type='text'>
-                            
+                        Genre
+                        <select onChange= {this.handleChange} value={this.state.genre_name} type='text'>
+                            <option>---Select A Genre---</option>
                             {genres.map((genre, i) =>{
                             return (
                                 <option key={i}> {genre.genre_name} </option>

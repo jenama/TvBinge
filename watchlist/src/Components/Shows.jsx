@@ -29,7 +29,7 @@ class Shows extends Component {
   };
 
   handleButton = () => {
-    
+    console.log('click')
   }
 
   render() {
@@ -38,8 +38,8 @@ class Shows extends Component {
 
     return (
       <div className="shows">
-        <button onClick={this.handleButton}>Add Show
-            <Link to={`/add-show/`}></Link>
+        <button >
+            <Link onClick={this.handleButton} to={`/add-show`}>Add Show</Link>
         </button>
         <h1>All Currently Watch Shows</h1>
 
