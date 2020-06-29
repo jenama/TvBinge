@@ -7,9 +7,9 @@ router.get('/', async(req, res, next) => {
       const requestQuery = `SELECT shows.id, title, img_url, genre_name, 
                             ARRAY_AGG(users.username) AS username, ARRAY_AGG(users.id) AS user_id
                                 FROM shows 
-                                FULL JOIN shows_users ON shows.id = shows_users.show_id
-                                FULL JOIN genres ON genres.id = shows.genre_id
-                                FULL JOIN users ON users.id = shows_users.user_id
+                                FULL OUTER JOIN shows_users ON shows.id = shows_users.show_id
+                                FULL OUTER JOIN genres ON genres.id = shows.genre_id
+                                FULL OUTER JOIN users ON users.id = shows_users.user_id
                                 GROUP BY shows.id, shows.title, shows.img_url, genres.genre_name`
       const shows = await db.any(requestQuery)
       console.log('shows', shows)
@@ -101,8 +101,8 @@ router.post('/', async(req, res, next) => {
     try {
       const insertQuery = `INSERT INTO shows (title, img_url, genre_id) 
                                 VALUES ($1, $2, $3)`;
-                            `INSERT INTO shows (user_id)
-                                VALUES ($4)`;
+                            `INSERT INTO shows-users (user_id)
+                                VALUES ($1)`;
        
 
         await db.none(insertQuery, [req.body.title, req.body.img_url, req.body.genre_id, req.body.user_id])

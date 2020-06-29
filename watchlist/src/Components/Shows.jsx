@@ -34,7 +34,7 @@ class Shows extends Component {
 
   render() {
     const { shows } = this.state;
-    console.log("showssss", shows);
+    // console.log("showssss", shows);
 
     return (
       <div className="shows">
@@ -58,11 +58,11 @@ class Shows extends Component {
                 />
                 <div>Genre: {show.genre_name} </div>
                   Being Watched By:
-                  {show.username.map((user, i) => {
+                  {show.user_id.map((user, i) => {
                     console.log('show me', user)
                   return (
                     <div>
-                      <Link to={`/user/${user}`}>{user}</Link>
+                      <Link to={`/user/${user}`}>{show.username[i]}</Link>
                     </div>
                   );
                 })}

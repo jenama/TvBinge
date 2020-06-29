@@ -49,7 +49,8 @@ class AddShow extends Component {
     handleChange = (e) => {
          console.log('select', e.target.value)
         this.setState({
-             genre_id: e.target.value
+             genre_id: e.target.value,
+             user_id: this.state.user_id
         })
     }
 
@@ -68,7 +69,7 @@ class AddShow extends Component {
     handleForm2 = async(e) => {
          e.preventDefault()
         const { title, img_url, genre_id, genres, user_id} = this.state;
-        // console.log('genreId', genreId)
+        console.log('check user_id', user_id)
 
     try {
       const url = `http://localhost:4100/shows`;
@@ -77,20 +78,20 @@ class AddShow extends Component {
         title:title,
         img_url:img_url,
         genre_id: genre_id,
-        user_id:user_id,
+        user_id:this.props.loggedUser.id,
       };
       
       let newShow = await axios.post(url, data);
      
       console.log("response", newShow);
      
-      this.setState({
+    //   this.setState({
 
-        title: data.title,
-        img_url: data.img_url,
-        genre_id: data.genre_id,
-        user_id: user_id
-      });
+    //     title: data.title,
+    //     img_url: data.img_url,
+    //     genre_id: data.genre_id,
+    //     user_id: data.user_id
+    //   });
     } catch (error) {
       console.log("error", error);
     }
@@ -99,7 +100,7 @@ class AddShow extends Component {
     render() {
         // const showId = this.props.match.params.id
         const { genres, shows, genre_id } = this.state
-        console.log('check genre_id', genre_id)
+        
         return(
             <div>
                 <h1>Add Show</h1>

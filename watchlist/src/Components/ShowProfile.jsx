@@ -103,7 +103,7 @@ class ShowProfile extends Component {
                         <textarea 
                             onChange={this.handleText} 
                             value={comment_body}
-                            placeHolder='comment...'
+                            placeholder='comment...'
                         />
                         <br></br>
                         <input type='submit' value='Add'/>
@@ -112,7 +112,7 @@ class ShowProfile extends Component {
                         <div>
                         {comments.map((comment, i)=> {
                             return(
-                                <div className='comment-body'>
+                                <div className='comment-body' key={comment}>
                                     <ol>
                                         <h3>{comment.username}</h3>
                                         <li>{comment.comment_body}</li>    
