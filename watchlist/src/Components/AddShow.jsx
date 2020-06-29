@@ -4,16 +4,18 @@ import { Link } from 'react-router-dom';
 class AddShow extends Component {
     constructor(props) {
         super(props)
-        console.log('props////', this.props)
+        console.log('props////', this.props.genres)
         
         this.state = {
             shows: [],
             choice: '',
             title: '',
             img_url: '',
-            genre_name: '',
-            genre_id: 1,
-            genres: []
+            genres: this.props.genres,
+            user_id: this.props.loggedUser.id,
+            // genre_name: this.props.genres,
+            genre_id: 0
+            
 
         }
     }
@@ -31,24 +33,11 @@ class AddShow extends Component {
         } catch (error) {
             console.log("error", error);
         }
-        this.getGenres()
+        // this.getAllGenres()
      }
 
-     getGenres = async() => {
-      try {
-        const url = `http://localhost:4100/genres`;
-        const { data } = await axios.get(url);
-        console.log("genres", data);
-        this.setState({
-          genres: data.payload
-        });
-       
-      } catch (error) {
-        console.log("error", error);
-      }
-      
-    };
-    
+  
+
      handleSelect = (e) => {
         console.log('select', e.target.value)
         this.setState({
@@ -60,7 +49,7 @@ class AddShow extends Component {
     handleChange = (e) => {
          console.log('select', e.target.value)
         this.setState({
-             genre_name: e.target.value
+             genre_id: e.target.value
         })
     }
 
@@ -71,32 +60,36 @@ class AddShow extends Component {
         })
         console.log('input', value)
     }
+    
     handleForm = async(e) => {
          e.preventDefault()
     }
 
     handleForm2 = async(e) => {
          e.preventDefault()
-        const { title, img_url, genre_id} = this.state;
+        const { title, img_url, genre_id, genres, user_id} = this.state;
+        // console.log('genreId', genreId)
 
     try {
       const url = `http://localhost:4100/shows`;
-      
-      
+     
       const data = {
-        title: title,
-        img_url: img_url,
-        genre_id: genre_id
+        title:title,
+        img_url:img_url,
+        genre_id: genre_id,
+        user_id:user_id,
       };
+      
       let newShow = await axios.post(url, data);
+     
       console.log("response", newShow);
      
       this.setState({
 
         title: data.title,
         img_url: data.img_url,
-        genre_id: genre_id,
-        // user_id: data.username
+        genre_id: data.genre_id,
+        user_id: user_id
       });
     } catch (error) {
       console.log("error", error);
@@ -105,8 +98,8 @@ class AddShow extends Component {
 
     render() {
         // const showId = this.props.match.params.id
-        const { genres, shows } = this.state
-        console.log('add show', genres)
+        const { genres, shows, genre_id } = this.state
+        console.log('check genre_id', genre_id)
         return(
             <div>
                 <h1>Add Show</h1>
@@ -118,7 +111,7 @@ class AddShow extends Component {
                             return (
                                 <>
                                   <option key={i}>{show.title}</option>
-                                  <Link to={`/shows/${show.id}`}></Link>   
+                                     
                                 </>
                                
                             )
@@ -135,9 +128,9 @@ class AddShow extends Component {
                         <input 
                             type="text"
                             name="title"
-                            value={this.state.title}
                             onChange={this.handleInput}
-                            placeHolder='Title...'
+                            value={this.state.title}
+                            placeholder='Title...'
                         />
                     </label>
                     <br></br>
@@ -146,21 +139,21 @@ class AddShow extends Component {
                         <input
                             type="text"
                             name="img_url"
-                            value={this.state.img_url}
                             onChange={this.handleInput}
-                            placeHolder='url...' 
+                            value={this.state.img_url}
+                            placeholder='url...' 
                         />
                     </label>
                     <br></br>
                     <label>
                         Genre
-                        <select onChange= {this.handleChange} value={this.state.genre_name} type='text'>
+                        <select onChange= {this.handleChange} value={this.state.genre_id} type='text'>
                             <option>---Select A Genre---</option>
                             {genres.map((genre, i) =>{
-                            return (
-                                <option key={i}> {genre.genre_name} </option>
-                            )
-                        })}
+                                return (
+                                    <option key={i}> {genre.id} </option>
+                                )
+                            })}
                         </select>
                     </label>
                     <br></br>

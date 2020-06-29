@@ -4,12 +4,12 @@ const db = require('../db/db');
 
 router.get('/', async(req, res, next) => {
     try {
-      const requestQuery = `SELECT shows.id, title, img_url, genre_name,
-                            ARRAY_AGG(users.username) AS usernames, ARRAY_AGG(users.id) AS users_id
+      const requestQuery = `SELECT shows.id, title, img_url, genre_name, 
+                            ARRAY_AGG(users.username) AS username, ARRAY_AGG(users.id) AS user_id
                                 FROM shows 
-                                INNER JOIN shows_users ON shows.id = shows_users.show_id
-                                INNER JOIN genres ON genres.id = shows.genre_id
-                                INNER JOIN users ON users.id = shows_users.user_id
+                                FULL JOIN shows_users ON shows.id = shows_users.show_id
+                                FULL JOIN genres ON genres.id = shows.genre_id
+                                FULL JOIN users ON users.id = shows_users.user_id
                                 GROUP BY shows.id, shows.title, shows.img_url, genres.genre_name`
       const shows = await db.any(requestQuery)
       console.log('shows', shows)
@@ -101,14 +101,18 @@ router.post('/', async(req, res, next) => {
     try {
       const insertQuery = `INSERT INTO shows (title, img_url, genre_id) 
                                 VALUES ($1, $2, $3)`;
+                            `INSERT INTO shows (user_id)
+                                VALUES ($4)`;
        
 
-        await db.none(insertQuery, [req.body.title, req.body.img_url, req.body.genre_id])
+        await db.none(insertQuery, [req.body.title, req.body.img_url, req.body.genre_id, req.body.user_id])
         const newShow = {
              title: req.body.title,
             img_url: req.body.img_url,
-            genre_id: req.body.genre_id
+            genre_id: req.body.genre_id,
+            user_id: req.body.user_id
         }
+        
         console.log('new show', newShow) 
         res.status(201)
         res.json({

@@ -38,13 +38,14 @@ class Shows extends Component {
 
     return (
       <div className="shows">
-        <button >
-            <Link onClick={this.handleButton} to={`/add-show`}>Add Show</Link>
-        </button>
+       
+            <Link onClick={this.handleButton} to={`/add-show`}><button>Add Show</button></Link>
+        
         <h1>All Currently Watch Shows</h1>
 
         <div>
-          {shows.map((show) => {
+          {shows.map(show => {
+            {/* console.log('show me', show) */}
             return (
               <div className="show">
                 <h2>{show.title}</h2>
@@ -56,11 +57,12 @@ class Shows extends Component {
                   height="450px"
                 />
                 <div>Genre: {show.genre_name} </div>
-                Being Watched By:
-                {show.users_id.map((user, i) => {
+                  Being Watched By:
+                  {show.username.map((user, i) => {
+                    console.log('show me', user)
                   return (
                     <div>
-                      <Link to={`/user/${user}`}>{show.usernames[i]}</Link>
+                      <Link to={`/user/${user}`}>{user}</Link>
                     </div>
                   );
                 })}

@@ -15,26 +15,40 @@ class App extends Component {
 
   constructor(props) {
     super(props)
-   
-    const { shows } = this.props
+
     this.state = {
       users: [],
       shows:[],
-      loggedUser: {}
-       
+      loggedUser: {
+        id: 1,
+        username: 'Jon Snow',
+        avatar_url: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/kit-harington-hair-jon-snow-1569167827.jpg?crop=0.439xw:0.878xh;0.0221xw,0.0306xh&resize=480:*'
+      },
+       genres: [
+        {
+         id:1,
+         genre_name: 'Adventure'
+       },
+       {
+         id:2,
+         genre_name: 'Drama'
+       },
+       {
+         id: 3,
+         genre_name: 'Comedy'
+       },
+       {
+        id: 4,
+        genre_name:'Fantasy'
+       }
+       ]
     }
-  }
+  } 
+
+  
          
- 
-
-
-  getProps = (shows) => {
-    this.setState({
-      allShows: shows
-    })
-  }
-
   render() {
+      
      return (
         <div className="App">
           <Navbar/>
@@ -42,15 +56,12 @@ class App extends Component {
             <Route exact path={'/'} component={Home}/>
             <Route path="/users" render={() => <Users users={this.state.users} />}/>
             <Route path="/user/:id" component={UserProfile}/>
-            <Route path="/add-show" render={() => 
-                <AddShow allShows={this.state.allShows}/>}
-                          getProps={this.getProps}
-                />
-            <Route path="/shows/:id" component={ShowProfile}/>
-            <Route path="/shows" render={() => 
-              <Shows
-                // getProps={this.getProps}
+            <Route path="/add-show" render={(props) => <AddShow loggedUser={this.state.loggedUser} genres={this.state.genres} {...props}/>}/>
+            <Route path="/shows/:id" render={(props) => <ShowProfile loggedUser = {this.state.loggedUser} {...props} />}/>
+            <Route path="/shows" render={() =><Shows
+              
                 shows={this.state.shows}
+                
               />}
             />
             <Route path="/about" component={About} />

@@ -4,12 +4,13 @@ import axios from 'axios';
 class ShowProfile extends Component {
     constructor(props) {
         super(props)
+        console.log('user id', this.props.loggedUser.id)
         this.state = {
             showProfile: {},
             comments: [],
            comment_body: '',
-           username: '', 
-        //    user_id: 0
+           username: this.props.loggedUser.username, 
+           user_id: this.props.loggedUser.id
         }
     }
 
@@ -72,7 +73,7 @@ class ShowProfile extends Component {
             const url = `http://localhost:4100/comments`;
             const data= {
                 comment_body: comment_body,
-                user_id: 1,
+                user_id: user_id,
                 show_id: this.props.match.params.id
             }
             console.log('user_id', user_id)
@@ -97,7 +98,7 @@ class ShowProfile extends Component {
                 <div> Genre: {showProfile.genre_name} </div>
                 <div className='comments-container'>
                     <form onSubmit={this.handleSubmit}>
-                        <input type='text' onChange={this.handleInput} value={username} />
+                        {/* <input type='text' onChange={this.handleInput} value={username} /> */}
                         <br></br>
                         <textarea 
                             onChange={this.handleText} 
@@ -121,7 +122,7 @@ class ShowProfile extends Component {
                             )
                         })}
 
-                        <h3>{username}</h3>
+                        {/* <h3>{username}</h3> */}
                         <div>{comment_body}</div>
                     </div>
                     
