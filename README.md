@@ -1,7 +1,7 @@
 
-## TV Show Watchlist App
+## BingeList App
 
-TV Show Watchlist will be a full-stack application where users can post, comment on, and favorite TV shows that they are binging on.
+TV BingeList is be a full-stack application where users can post, comment on, and favorite TV shows that they are binging on.
 
 - Users should be able to **add shows** that they watch. These shows are shared on their profile pages.
 - Users can view the profile pages of other users and see the shows they are watching.
