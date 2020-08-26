@@ -7,9 +7,9 @@ router.get('/', async(req, res, next) => {
       const requestQuery = `SELECT shows.id, title, img_url, genre_name, 
                             ARRAY_AGG(users.username) AS username, ARRAY_AGG(users.id) AS user_id
                                 FROM shows 
-                                FULL OUTER JOIN shows_users ON shows.id = shows_users.show_id
-                                FULL OUTER JOIN genres ON genres.id = shows.genre_id
-                                FULL OUTER JOIN users ON users.id = shows_users.user_id
+                                FULL JOIN shows_users ON shows.id = shows_users.show_id
+                                FULL JOIN genres ON genres.id = shows.genre_id
+                                FULL JOIN users ON users.id = shows_users.user_id
                                 GROUP BY shows.id, shows.title, shows.img_url, genres.genre_name`
       const shows = await db.any(requestQuery)
       console.log('shows', shows)
@@ -72,14 +72,14 @@ router.get('/user/:user_id', async(req, res, next) => {
     try {
        let userId = req.params.user_id
        console.log('user id', userId)
-      const requestQuery = `SELECT genre_name, title, img_url, username, avatar_url, shows.id, COUNT(comment_body)
+      const requestQuery = `SELECT genre_name, title, img_url, username, avatar_url, shows.id, shows_users.user_id, COUNT(comment_body)
                                     FROM shows 
                                     FULL OUTER JOIN shows_users ON shows.id = shows_users.show_id
                                     FULL OUTER JOIN users ON shows_users.user_id = users.id 
                                     FULL OUTER JOIN genres ON genres.id = shows.genre_id
                                     FULL OUTER JOIN comments ON shows.id = comments.show_id
                                     WHERE shows_users.user_id = $1
-                                    GROUP BY shows.title, shows.img_url, genre_name, users.username, users.avatar_url, shows.id` 
+                                    GROUP BY shows.title, shows.img_url, genre_name, users.username, users.avatar_url, shows.id, shows_users.user_id` 
       const showsByUser = await db.any(requestQuery, userId)
       console.log('shows by id', showsByUser)
       res.status(200)
@@ -100,23 +100,20 @@ router.post('/', async(req, res, next) => {
     
     try {
       const insertQuery = `INSERT INTO shows (title, img_url, genre_id) 
-                                VALUES ($1, $2, $3)`;
-                            `INSERT INTO shows-users (user_id)
-                                VALUES ($1)`;
+                                VALUES ($1, $2, $3)
+                                RETURNING *`;
+      
+        const addedShow = await db.one(insertQuery, [req.body.title, req.body.img_url, req.body.genre_id, req.body.user_id, req.body.show_id])
        
-
-        await db.none(insertQuery, [req.body.title, req.body.img_url, req.body.genre_id, req.body.user_id])
-        const newShow = {
-             title: req.body.title,
-            img_url: req.body.img_url,
-            genre_id: req.body.genre_id,
-            user_id: req.body.user_id
-        }
+        const query = `INSERT INTO shows_users (user_id, show_id)
+                            VALUES ($1, $2)`;
+        await db.none(query, [req.body.user_id, addedShow.id])
+       
         
-        console.log('new show', newShow) 
+        console.log('new show', addedShow) 
         res.status(201)
         res.json({
-            payload: newShow,
+            payload: addedShow,
             msg: `A new show has been successfully added`
         })
     } catch (error) {

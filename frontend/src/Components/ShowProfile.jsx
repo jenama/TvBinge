@@ -122,7 +122,7 @@ class ShowProfile extends Component {
                             )
                         })}
 
-                        {/* <h3>{username}</h3> */}
+                        <h3>{username}</h3>
                         <div>{comment_body}</div>
                     </div>
                     
