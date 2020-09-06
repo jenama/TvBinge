@@ -9,7 +9,6 @@ TV BingeList is be a full-stack application where users can post, comment on, an
 
 ## Database Structure
 
-![database schema diagram](./assets/schema_diagram.png)
 
 - **users**
   - id
@@ -37,7 +36,7 @@ TV BingeList is be a full-stack application where users can post, comment on, an
   - user_id - _References Users_
   - show_id - _References Shows_
 
->  [seed.sql](/seed.sql) file.
+
 
 ## API Endpoints
 
@@ -90,8 +89,7 @@ TV BingeList is be a full-stack application where users can post, comment on, an
 | `/shows/:id` | A specific show's profile page. Shows the title, image, genre, number of comments and list of comments. Allows you to add new comments. The comment should be reflected immediately on the list without needing to refresh the page when a new comments is added.                                                                                                                                                                                                                   |
 | `/about`     | Shows short description of what this app is about and who made it                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
-### Wireframes 
-Find wireframes [here](./assets/TV%20Watchlist%20App%20Wireframes.pdf).
+
 
 
 
