@@ -23,11 +23,9 @@ router.get('/', async(req, res, next) => {
 
 router.get('/:id', async(req, res, next) => {
   const id = req.params.id
-  // console.log('ID=', id)
   try {
     const requestQuery = `SELECT * FROM users WHERE id = $1`
     const user = await db.oneOrNone(requestQuery, id)
-    // console.log('user', user)
     res.status(200)
     res.json({
       payload: user,
